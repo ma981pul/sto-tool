@@ -37,9 +37,9 @@ class Wahrscheinlichkeitsrechnung:
             if(name == 'q'):
                 break
             wert = input("Wert eingeben: ")
-
             if(len(name) == 1):
-                self.wahrscheinlichkeiten.append(Wahrscheinlichkeit(name, wert))
+                ebene = input("Ebene im Wahrscheinlichkeitsbaum angeben: ")
+                self.wahrscheinlichkeiten.append(Wahrscheinlichkeit(name, wert, ebene))
             else:
                 self.bedingteWahrscheinlichkeiten.append((BedingteWahrscheinlichkeit(name[0], name[2], wert)))
 
@@ -49,5 +49,12 @@ class Wahrscheinlichkeitsrechnung:
                 print(i.toString())
 
     def berechneWahrscheinlichkeiten(self, w):
+
+
         if(type(w) is BedingteWahrscheinlichkeit):
-            return
+            e = w.ereignis
+            b = w.bedingung
+            v = w.wert
+
+            #Formel von Bayes
+            w.wert = (next(x for x in self.bedingteWahrscheinlichkeiten if x.ereignis == w.gegenereignis and x.gegenereignis == w.ereignis).wert * next(x for x in self.wahrscheinlichkeiten if x.ereignis == w.ereignis).wert) / next(x for x in self.wahrscheinlichkeiten if x.ereignis == w.bedingung).wert
